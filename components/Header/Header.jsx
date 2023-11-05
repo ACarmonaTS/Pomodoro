@@ -1,4 +1,5 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import styles from "./HeaderStyles";
 
 const options = ["Pomodoro", "Short Break", "Long Break"];
 
@@ -16,27 +17,25 @@ export default function Header({ currentTime, setCurrentTime, setTime }) {
           onPress={() => handlePress(index)}
           style={[
             styles.itemStyle,
-            currentTime !== index && { borderColor: "transparent" },
+            currentTime !== index
+              ? { backgroundColor: "black" }
+              : {
+                  backgroundColor: "white",
+                  borderTopLeftRadius: 15,
+                  borderTopRightRadius: 15,
+                },
           ]}
         >
-          <Text style={{ fontWeight: "bold" }}>{item}</Text>
+          <Text
+            style={[
+              styles.itemText,
+              currentTime !== index ? { color: "white" } : { color: "black" },
+            ]}
+          >
+            {item}
+          </Text>
         </TouchableOpacity>
       ))}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  itemStyle: {
-    width: "33%",
-
-    alignItems: "center",
-
-    borderWidth: 3,
-    borderColor: "white",
-    borderRadius: 20,
-
-    padding: 5,
-    marginVertical: 20,
-  },
-});

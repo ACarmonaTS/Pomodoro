@@ -4,18 +4,20 @@ import { StatusBar } from "expo-status-bar";
 import {
   Platform,
   SafeAreaView,
-  StyleSheet,
   Text,
   View,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { Audio } from "expo-av";
 
-import Header from "./components/Header";
-import Timer from "./components/Timer";
+import Header from "./components/Header/Header";
+import Timer from "./components/Timer/Timer";
+
+import styles from "./AppStyles";
 
 export default function App() {
-  const colors = ["#F7DC6F", "#A2D9CE", "#D7BDE2"];
+  // const colors = ["#2FAD00", "#0094AC", "#A5016F"];
   const optionsTimes = { 0: 25, 1: 5, 2: 15 };
 
   const [isWorking, setIsWorking] = useState(true);
@@ -56,52 +58,54 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: colors[currentTime] }]}
-    >
+    <SafeAreaView style={[styles.container, { backgroundColor: "black" }]}>
       <View
         style={{
           flex: 1,
-          paddingHorizontal: 15,
-          paddingTop: Platform.OS === "android" && 30,
+          paddingHorizontal: 20,
+          paddingTop: Platform.OS === "android" && 40,
         }}
       >
-        <Text style={styles.text}>Pomodoro</Text>
-        <Header
-          currentTime={currentTime}
-          setCurrentTime={setCurrentTime}
-          setTime={setTime}
-        />
-        <Timer style={styles.text} time={time} />
-        <TouchableOpacity style={styles.button} onPress={handleStartStop}>
-          <Text style={{ color: "white", fontWeight: "bold" }}>
-            {isActive ? "STOP" : "START"}
-          </Text>
-        </TouchableOpacity>
-        <StatusBar backgroundColor="green" style="light" />
+        <View style={styles.title}>
+          <View style={styles.containerLogo}>
+            <Image
+              style={styles.logo}
+              source={require("./assets/images/logo.png")}
+            />
+          </View>
+          <Text style={styles.text}>Pomodoro</Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
+          <Header
+            currentTime={currentTime}
+            setCurrentTime={setCurrentTime}
+            setTime={setTime}
+          />
+          <Timer style={styles.text} time={time} />
+          <View>
+            <TouchableOpacity
+              onPress={handleStartStop}
+              style={[
+                styles.button,
+                isActive
+                  ? { backgroundColor: "#C20303" }
+                  : { backgroundColor: "#2FAD00" },
+              ]}
+            >
+              <Text
+                style={{ color: "white", fontWeight: "bold", fontSize: 30 }}
+              >
+                {isActive ? "STOP" : "START"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <StatusBar backgroundColor="black" style="light" />
       </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-
-  text: {
-    fontSize: 32,
-    fontWeight: "bold",
-  },
-
-  button: {
-    backgroundColor: "#333333",
-
-    padding: 15,
-    marginTop: 15,
-
-    borderRadius: 15,
-
-    alignItems: "center",
-  },
-});
